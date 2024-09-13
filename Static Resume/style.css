@@ -1,0 +1,78 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.resume-container{
+    display: flex;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: center;    
+}
+
+.left-section{
+    width: 50%;
+    /* padding-right: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    background-color: #f5f5f5;
+    /* border-radius: 10px 0px 0px 10px; */
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile{
+    text-align: center;
+    margin-bottom: 20px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+
+h1{
+    font-size: 50px;
+    margin-left: 60px;    
+}
+
+h3{
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.5;
+    text-decoration: underline;
+    word-spacing: 2px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 2%;
+    padding-top: 15px;
+}
+
+p {
+    text-align: center;
+}
+
+button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 510px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    letter-spacing: 1px;
+    
+}
+
+button:hover {
+    background-color: #044080;
+}
