@@ -3,15 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dynamic Resume</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <form id="editable-resume">
+    
+    <form id="dynamic-resume">
+        <h1>Dynamic Resume</h1>
+
+        <h2>Career Objective</h2>
+        <input type="text" class="intro" id="career" placeholder="Add Your Career Objective" rows= "4" required>
       <fieldset>
+        
         <!-- Personal Information -->
         <legend>Personal Information</legend>
-
+        
         <label for="name">Name:</label>
         <input type="text" id="name" placeholder="Enter Your Name" required >
 
@@ -23,6 +29,13 @@
 
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" required>
+
+        <label for="add">Address:</label>
+        <input type="text" id="add" placeholder="Enter Your Address" required>
+        
+        <label for="profilepic">Profile Picture:</label>
+        <input type="file" id="profilepic" name="profilepic" accept="image/*" required>
+
       </fieldset> 
 
         <br>
@@ -47,14 +60,18 @@
 
       <fieldset>
         <!-- Skills -->
-        <legend>Skills</legend>
+        <legend>Skills & Languages</legend>
         <label for="skills">Skills:</label>
         <textarea id="skills" placeholder="Enter Your Skills" rows="4" required></textarea>
+
+        <label for="languages">Languages:</label>
+        <textarea id="language" placeholder="Enter Your Languages" rows="4" required></textarea>
       </fieldset>
 
       <br>
 
       <button id="submit"> Generate Resume</button>
+
     </form>
 
     <br>
