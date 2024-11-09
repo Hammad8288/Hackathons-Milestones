@@ -1,70 +1,61 @@
-// Step No.1
-var form = document.getElementById('shareable-resume');
+var form = document.getElementById('editable-resume');
 var resume = document.getElementById('resume-display');
 var shareableLinkContainer = document.getElementById('shareable-link-container');
-var shareableLinkElement = document.getElementById('shareable-link');
-var downloadPdfButton = document.getElementById('download-pdf');
+var shareableLink = document.getElementById('shareable-link');
+var downloadButton = document.getElementById('download-resume');
 form.addEventListener('submit', function (e) {
+    var _a;
     e.preventDefault();
-    // Step No.3
-    // collect user input fields
-    var username = document.getElementById('username').value;
-    var name = document.getElementById('name').value;
+    // Collect user input fields
+    var Fname = document.getElementById('name').value;
     var email = document.getElementById('email').value;
     var number = document.getElementById('number').value;
     var dob = document.getElementById('dob').value;
+    var address = document.getElementById('add').value;
     var education = document.getElementById('education').value;
     var experience = document.getElementById('experience').value;
     var skills = document.getElementById('skills').value;
-    // Step No.4
-    //save the user information in the database
-    var resumeData = {
-        name: name,
-        email: email,
-        number: number,
-        dob: dob,
-        education: education,
-        experience: experience,
-        skills: skills
-    };
-    localStorage.setItem(username, JSON.stringify(resumeData));
-    // Step No.5
-    // display user input in resume
-    var resumeHTML = "\n    <h2><b>Shareable Resume</b></h2> \n    <br>\n    <h3>Personel Information</h3>\n    <br>\n    <ul>\n        <li><b><span contenteditable = \"true\">Name:</b> ".concat(name, "</span></li>\n        <li><b><span contenteditable = \"true\">Email:</b> ").concat(email, "</span></li>\n        <li><b><span contenteditable = \"true\">Phone Number:</b> ").concat(number, "</span></li>\n        <li><b><span contenteditable = \"true\">Date of Birth:</b> ").concat(dob, "</span></li>\n    </ul>\n\n    <br>\n    <h3>Education</h3>\n    <p contenteditable = \"true\">").concat(education, "</p>\n\n\n    <br>\n    <h3>Experience</h3>\n    <p contenteditable = \"true\">").concat(experience, "</p>\n\n    <br>\n    <h3>Skills</h3>\n    <p contenteditable = \"true\">").concat(skills, "</p>\n");
-    //Setp No.6
-    if (resume) {
+    var language = document.getElementById('language').value;
+    var career = document.getElementById('career').value;
+    var picFile = (_a = document.getElementById('profilepic').files) === null || _a === void 0 ? void 0 : _a[0];
+    if (!resume) {
+        console.error('The resume display element is missing.');
+        return;
+    }
+    // Generate a unique URL based on the user's name
+    var baseURL = window.location.origin;
+    var uniqueURL = "".concat(baseURL, "/resume/").concat(Fname.replace(/\s+/g, '-').toLowerCase());
+    shareableLink.href = uniqueURL;
+    shareableLink.innerText = uniqueURL;
+    shareableLinkContainer.style.display = 'block';
+    // Function to generate the resume HTML
+    var genResumeHTML = function (imgDataURL) {
+        var resumeHTML = "\n            ".concat(imgDataURL ? "<img src=\"".concat(imgDataURL, "\" alt=\"Profile Picture\" style=\"width:150px; height:150px; border-radius:50%;\">") : "", "\n            <br>\n             <h2><b>").concat(Fname, "</b></h2>\n            <br>\n            <h3>Career Objective</h3>\n            <br>\n            <p>").concat(career, "</p>\n            <br>\n            <h3>Personal Information</h3>\n            <br>\n            <ul>\n                <li><b>Name:</b><span> ").concat(Fname, "</span></li>\n                <li><b>Email:</b> ").concat(email, "</li>\n                <li><b>Phone Number:</b> ").concat(number, "</li>\n                <li><b>Date of Birth:</b> ").concat(dob, "</li>\n                <li><b>Address:</b> ").concat(address, "</li>\n            </ul>\n            <br>\n            <h3>Education</h3>\n            <p>").concat(education.split(" ").join("\n"), "</p>\n            <br>\n            <h3>Experience</h3>\n            <p>").concat(experience, "</p>\n            <br>\n            <h3>Skills</h3>\n            <p>").concat(skills, "</p>\n            <br>\n            <h3>Languages</h3>\n            <p>").concat(language, "</p>\n        ");
         resume.innerHTML = resumeHTML;
+    };
+    // Handle the profile picture
+    if (picFile) {
+        var reader_1 = new FileReader();
+        reader_1.onload = function () {
+            genResumeHTML(reader_1.result);
+        };
+        reader_1.readAsDataURL(picFile);
     }
     else {
-        console.error('The resume display element is missing.');
+        genResumeHTML(null);
     }
-    // Step No.7
-    // Shareable link
-    var shareableURL = "".concat(window.location.origin, "?username=").concat(encodeURIComponent(username));
-    shareableLinkContainer.style.display = 'block';
-    shareableLinkElement.href = shareableURL;
-    shareableLinkElement.textContent = shareableURL;
 });
-// Step No.8    
-downloadPdfButton.addEventListener('click', function () {
-    window.print();
-});
-// Step No.9
-window.addEventListener('DOMContentLoaded', function () {
-    var urlParams = new URLSearchParams(window.location.search);
-    var username = urlParams.get('username');
-    if (username) {
-        var savedResumeData = localStorage.getItem(username);
-        if (savedResumeData) {
-            var resumeData = JSON.parse(savedResumeData);
-            document.getElementById('username').value = username;
-            document.getElementById('name').value = resumeData.name;
-            document.getElementById('email').value = resumeData.email;
-            document.getElementById('number').value = resumeData.number;
-            document.getElementById('dob').value = resumeData.dob;
-            document.getElementById('education').value = resumeData.education;
-            document.getElementById('experience').value = resumeData.experience;
-            document.getElementById('skills').value = resumeData.skills;
-        }
+// Download resume as PDF
+downloadButton.addEventListener('click', function () {
+    if (resume) {
+        var options = {
+            margin: 0,
+            filename: 'resume.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 1 },
+            jsPDF: { unit: 'px', format: [resume.offsetWidth, resume.offsetHeight] }
+        };
+        // @ts-ignore
+        html2pdf().set(options).from(resume).save();
     }
 });
